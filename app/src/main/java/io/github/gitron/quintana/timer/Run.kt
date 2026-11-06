@@ -51,11 +51,11 @@ data class Run(
     }
 
     companion object {
-        fun start(set: TimerSet, preRoundWarningSeconds: Int, nowMillis: Long) = Run(
+        fun start(set: TimerSet, roundEndWarningSeconds: Int, nowMillis: Long) = Run(
             setId = set.id,
             setName = set.name,
             restSeconds = set.restSeconds,
-            schedule = Schedule.of(set, preRoundWarningSeconds),
+            schedule = Schedule.of(set, roundEndWarningSeconds),
             clock = RunClock.startedAt(nowMillis),
         )
     }

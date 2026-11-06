@@ -17,14 +17,14 @@ class LibraryTest {
 
     private val sparring = TimerSet(id = "a", name = "Sparring", workSeconds = 120, restSeconds = 60, rounds = 12)
     private val tabata = TimerSet(id = "b", name = "Tabata", workSeconds = 20, restSeconds = 10, rounds = 8)
-    private val library = Library(sets = listOf(sparring, tabata), preRoundWarningSeconds = 5, lastSelectedSetId = "b")
+    private val library = Library(sets = listOf(sparring, tabata), roundEndWarningSeconds = 5, lastSelectedSetId = "b")
 
     @Test
-    fun `first start has the standard set selected and a 10 s lead-in`() = runTest {
+    fun `first start has the standard set selected and a 10 s warning`() = runTest {
         val first = LibraryStore(file).load()
         assertEquals(listOf("Standard"), first.sets.map { it.name })
         assertEquals(first.sets.single().id, first.lastSelectedSetId)
-        assertEquals(10, first.preRoundWarningSeconds)
+        assertEquals(10, first.roundEndWarningSeconds)
     }
 
     @Test
@@ -45,7 +45,7 @@ class LibraryTest {
     fun `reads libraries written by version 1`() = runTest {
         file.writeText(
             """
-            {"version":1,"preRoundWarningSeconds":5,"lastSelectedSetId":"b","sets":[
+            {"version":1,"roundEndWarningSeconds":5,"lastSelectedSetId":"b","sets":[
               {"id":"a","name":"Sparring","workSeconds":120,"restSeconds":60,"rounds":12},
               {"id":"b","name":"Tabata","workSeconds":20,"restSeconds":10,"rounds":8}
             ]}
@@ -84,7 +84,7 @@ class LibraryTest {
 
     @Test
     fun `lead-in setting stays within its range`() {
-        assertEquals(0, library.withPreRoundWarning(-5).preRoundWarningSeconds)
-        assertEquals(30, library.withPreRoundWarning(45).preRoundWarningSeconds)
+        assertEquals(0, library.withRoundEndWarning(-5).roundEndWarningSeconds)
+        assertEquals(30, library.withRoundEndWarning(45).roundEndWarningSeconds)
     }
 }

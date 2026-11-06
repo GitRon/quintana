@@ -10,22 +10,26 @@
         android:scaleX="0.9"
         android:scaleY="0.9"
         android:translateX="25.2"
-        android:translateY="25.2">
+        android:translateY="24.5">
         <path
-            android:pathData="M32,4 L56,12 V30 C56,46 45,56 32,60 C19,56 8,46 8,30 V12 Z"
+            android:pathData="M10,36 a22,22 0 1,0 44,0 a22,22 0 1,0 -44,0"
             android:strokeColor="#FFD4A43A"
-            android:strokeLineJoin="round"
             android:strokeWidth="3.5" />
         <path
-            android:pathData="M32,21 V50 M17,24 L47,18 M25,50 H39"
-            android:strokeColor="#FFF2EBDD"
+            android:pathData="M32,13.5 V9.5 M26.5,8 H37.5 M47.5,19.5 L50.5,16.5"
+            android:strokeColor="#FFD4A43A"
             android:strokeLineCap="round"
             android:strokeWidth="4" />
         <path
+            android:pathData="M32,36 V51 M27,51 H37 M20,40 L44,32"
+            android:strokeColor="#FFF2EBDD"
+            android:strokeLineCap="round"
+            android:strokeWidth="3.5" />
+        <path
             android:fillColor="#FFD9442E"
-            android:pathData="M42.5,18 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0 Z" />
+            android:pathData="M40,32 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 Z" />
         <path
             android:fillColor="#FFD4A43A"
-            android:pathData="M12,22 H22 V27 C22,30.5 19.5,32.5 17,33.5 C14.5,32.5 12,30.5 12,27 Z" />
+            android:pathData="M14,38 H22 V42 C22,45 20,46.5 18,47.5 C16,46.5 14,45 14,42 Z" />
     </group>
 </vector>

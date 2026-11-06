@@ -33,7 +33,7 @@ class LibraryStore(private val file: File) {
         withContext(Dispatchers.IO) {
             val json = JSONObject()
                 .put("version", 1)
-                .put("preRoundWarningSeconds", library.preRoundWarningSeconds)
+                .put("roundEndWarningSeconds", library.roundEndWarningSeconds)
                 .put("lastSelectedSetId", library.lastSelectedSetId ?: JSONObject.NULL)
                 .put("sets", JSONArray(library.sets.map { it.toJson() }))
             val temporary = File(file.path + ".tmp")
@@ -51,9 +51,11 @@ class LibraryStore(private val file: File) {
 
     private fun JSONObject.toLibrary(): Library {
         val sets = getJSONArray("sets")
+        // The first builds had a lead-in before each round instead, stored under another name.
+        val warning = optInt("roundEndWarningSeconds", optInt("preRoundWarningSeconds", Limits.DEFAULT_ROUND_END_WARNING))
         return Library(
             sets = (0 until sets.length()).map { sets.getJSONObject(it).toSet() },
-            preRoundWarningSeconds = Limits.preRoundWarning.clamp(optInt("preRoundWarningSeconds", Limits.DEFAULT_PRE_ROUND_WARNING)),
+            roundEndWarningSeconds = Limits.roundEndWarning.clamp(warning),
             lastSelectedSetId = if (isNull("lastSelectedSetId")) null else optString("lastSelectedSetId"),
         )
     }

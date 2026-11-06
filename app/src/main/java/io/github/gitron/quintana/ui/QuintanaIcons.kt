@@ -70,6 +70,15 @@ object QuintanaIcons {
         moveTo(20f, 12f)
         horizontalLineTo(22f)
     }
+
+    /** A circular arrow: back to the start of the set. */
+    val Reset = lines("Reset") {
+        moveTo(5.5f, 9f)
+        arcTo(7.5f, 7.5f, 0f, true, true, 4.5f, 12.5f)
+        moveTo(5.5f, 4f)
+        verticalLineTo(9f)
+        horizontalLineTo(10.5f)
+    }
     val Play = filled("Play") {
         moveTo(7f, 4f)
         lineTo(20f, 12f)
@@ -79,9 +88,6 @@ object QuintanaIcons {
     val Pause = filled("Pause") {
         rect(6f, 4f, 4f, 16f)
         rect(14f, 4f, 4f, 16f)
-    }
-    val Stop = filled("Stop") {
-        rect(5f, 5f, 14f, 14f)
     }
 
     private fun lines(name: String, width: Float = 2f, block: PathBuilder.() -> Unit) = ImageVector.Builder(name, 24.dp, 24.dp, 24f, 24f)

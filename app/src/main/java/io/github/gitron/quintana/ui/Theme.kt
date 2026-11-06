@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import io.github.gitron.quintana.R
 import io.github.gitron.quintana.timer.Phase
 
-// Heraldic tinctures of the corporate identity: red is work, blue is rest, gold is the lead-in and the mark.
+// Heraldic tinctures of the corporate identity: red is the workout, blue is rest, gold is the end of a round and the mark.
 val Eisen = Color(0xFF14110F)
 val Kohle = Color(0xFF1F1B18)
 val Linie = Color(0xFF3A332D)
@@ -25,7 +25,7 @@ val TextSecondary = Color(0xFFA89E8E)
 val Gules = Color(0xFFD9442E)
 val Azur = Color(0xFF4C8FD6)
 val Or = Color(0xFFD4A43A)
-val VorlaufBackground = Color(0xFF1C1810)
+val ClosingBackground = Color(0xFF1C1810)
 val Loeschen = Color(0xFFE0705F)
 
 /** Ring track and dividers on iron. */
@@ -47,17 +47,17 @@ data class PhaseColors(
 
 private val IronPhase = PhaseColors(Gules, Eisen, Kohle, Linie, Track, TextSecondary)
 
-/** The whole screen turns gold during the lead-in, so it is noticed from the corner of the eye. */
+/** The whole screen turns gold for the last seconds of a round, so it is noticed from the corner of the eye. */
 fun phaseColors(phase: Phase): PhaseColors = when (phase) {
-    Phase.LEAD_IN -> PhaseColors(
+    Phase.CLOSING -> PhaseColors(
         accent = Or,
-        background = VorlaufBackground,
+        background = ClosingBackground,
         surface = Color(0xFF26200F),
         line = Color(0xFF3D3420),
         track = Color(0xFF2E2717),
         secondary = Color(0xFFB5A98F),
     )
-    Phase.WORK -> IronPhase
+    Phase.WORKOUT -> IronPhase
     Phase.REST -> IronPhase.copy(accent = Azur)
     Phase.DONE -> IronPhase.copy(accent = Pergament)
 }

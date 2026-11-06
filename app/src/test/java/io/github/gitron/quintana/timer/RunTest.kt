@@ -38,28 +38,29 @@ class RunTest {
 
     @Test
     fun `run is finished at the end of its schedule`() {
-        val run = Run.start(set, preRoundWarningSeconds = 10, nowMillis = 0)
-        assertFalse(run.isFinished(99_999))
-        assertTrue(run.isFinished(100_000))
-        assertEquals(Phase.WORK, run.snapshot(10_000).phase)
+        val run = Run.start(set, roundEndWarningSeconds = 10, nowMillis = 0)
+        assertFalse(run.isFinished(89_999))
+        assertTrue(run.isFinished(90_000))
+        assertEquals(Phase.WORKOUT, run.snapshot(5_000).phase)
+        assertEquals(Phase.CLOSING, run.snapshot(15_000).phase)
         assertEquals(Phase.DONE, run.copy(finished = true).snapshot(10_000).phase)
     }
 
     @Test
     fun `pause freezes the run and resume continues it`() {
-        val paused = Run.start(set, preRoundWarningSeconds = 10, nowMillis = 0).togglePause(12_000)
+        val paused = Run.start(set, roundEndWarningSeconds = 10, nowMillis = 0).togglePause(4_000)
         assertTrue(paused.clock.isPaused)
-        assertEquals(18_000L, paused.snapshot(600_000).phaseRemainingMillis)
+        assertEquals(6_000L, paused.snapshot(600_000).phaseRemainingMillis)
 
         val resumed = paused.togglePause(600_000)
-        assertEquals(17_000L, resumed.snapshot(601_000).phaseRemainingMillis)
+        assertEquals(5_000L, resumed.snapshot(601_000).phaseRemainingMillis)
         val finished = resumed.copy(finished = true)
         assertEquals(finished, finished.togglePause(700_000))
     }
 
     @Test
     fun `active run is shared until it is cleared`() {
-        val run = Run.start(set, preRoundWarningSeconds = 10, nowMillis = 0)
+        val run = Run.start(set, roundEndWarningSeconds = 10, nowMillis = 0)
         ActiveRun.begin(run)
         ActiveRun.togglePause(5_000)
         assertTrue(ActiveRun.run.value?.clock?.isPaused == true)

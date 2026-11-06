@@ -11,29 +11,27 @@
     <string name="name">Name</string>
     <string name="page_position" tools:ignore="PluralsCandidate">Seite %1$d von %2$d</string>
 
-    <string name="phase_lead_in">Vorlauf</string>
-    <string name="phase_work">Arbeit</string>
+    <string name="phase_workout">Workout</string>
+    <string name="phase_closing">Endspurt</string>
     <string name="phase_rest">Pause</string>
     <string name="phase_done">Fertig</string>
     <string name="rounds">Runden</string>
-    <string name="lead_in_label">Gleich geht’s los</string>
 
     <string name="total">Gesamt %1$s</string>
-    <string name="total_with_lead_in">Gesamtdauer inkl. Vorlauf</string>
+    <string name="total_duration">Gesamtdauer</string>
     <string name="total_minutes">%1$s min</string>
     <string name="less">%1$s: weniger</string>
     <string name="more">%1$s: mehr</string>
 
     <string name="pause">Pause</string>
     <string name="resume">Weiter</string>
-    <string name="stop">Stoppen</string>
-    <string name="stop_hint">Zum Stoppen halten</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="reset_hint">Zum Zurücksetzen halten</string>
     <string name="display_on">Display bleibt an</string>
     <string name="paused">Pausiert</string>
     <string name="then_rest">dann %1$s Pause</string>
     <string name="then_round">dann Runde %1$d</string>
     <string name="last_round">letzte Runde</string>
-    <string name="round_starts" tools:ignore="PluralsCandidate">Runde %1$d startet</string>
     <plurals name="rounds_done">
         <item quantity="one">%1$d Runde geschafft</item>
         <item quantity="other">%1$d Runden geschafft</item>
@@ -41,13 +39,13 @@
     <string name="progress_round">Runde %1$d</string>
     <string name="progress_of">/ %1$d</string>
     <string name="progress_after" tools:ignore="PluralsCandidate">nach Runde %1$d / %2$d</string>
-    <string name="progress_before">vor Runde 1 / %1$d</string>
     <string name="progress_done">Geschafft</string>
     <string name="remaining_total">noch %1$s</string>
 
-    <string name="lead_in_setting">Vorlauf-Warnung · gilt für alle Sets</string>
-    <string name="lead_in_before_round">Vor jeder Runde</string>
-    <string name="lead_in_detail">Countdown + Signal</string>
+    <string name="warning_setting">Warnung vor Rundenende · gilt für alle Sets</string>
+    <string name="warning">Warnung vor Rundenende</string>
+    <string name="warning_before_end">Vor jedem Rundenende</string>
+    <string name="warning_detail">Countdown + Signal</string>
     <string name="seconds" tools:ignore="PluralsCandidate">%1$d s</string>
     <string name="off">Aus</string>
     <string name="my_sets">Meine Sets</string>
