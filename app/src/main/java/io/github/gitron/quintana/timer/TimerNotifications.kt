@@ -84,7 +84,7 @@ class TimerNotifications(private val context: Context) {
                 Phase.DONE -> R.string.phase_done
             },
         )
-        val remaining = formatClock(secondsLeft(snapshot.phaseRemainingMillis))
+        val remaining = formatClock(secondsLeft(snapshot.countdownMillis))
         val title = if (run.clock.isPaused) {
             context.getString(R.string.notification_paused, phase, remaining)
         } else {

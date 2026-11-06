@@ -43,8 +43,9 @@ Requires Android 10 or later.
 - Swipe between sets on the start screen; the last page creates a new set. The pager opens on
   the set used last.
 - The pencil edits the shown set. Editing never creates a new set; **Zurück** drops the changes.
-- **START** runs the set right away: workout (red) and rest (blue) in turn. The last seconds of
-  each round turn gold („Endspurt“) and count down as a big number. No rest follows the last round.
+- **START** runs the set right away: workout (red) and rest (blue) in turn. The clock counts down
+  the whole round, so a 3 minute round starts at 3:00. Its last seconds turn gold („Endspurt“),
+  with a warning tone, and count down as a big number. No rest follows the last round.
 - **PAUSE** freezes the run. The reset button ends it and goes back to the set, ready for **START**:
   once paused with a tap, while the timer runs only when **held for a second**, so a gloved hand does
   not reset by accident. The system back button does nothing while a run is on.

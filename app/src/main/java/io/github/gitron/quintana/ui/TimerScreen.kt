@@ -137,11 +137,11 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
             contentAlignment = Alignment.Center,
         ) {
             val ring = minOf(maxWidth, maxHeight, 310.dp)
-            val remaining = if (done) 1f else 1f - snapshot.phaseProgress
+            val remaining = if (done) 1f else 1f - snapshot.countdownProgress
             Ring(size = ring, stroke = 16.dp, track = colors.track, color = colors.accent, remaining = remaining)
             val scale = ring / 310.dp
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                val seconds = secondsLeft(snapshot.phaseRemainingMillis)
+                val seconds = secondsLeft(snapshot.countdownMillis)
                 // The closing seconds count down as a bare number, readable from across the room.
                 if (snapshot.phase == Phase.CLOSING) {
                     Text(seconds.toString(), style = numbers(fixedSp(150.dp * scale)), color = colors.accent)
