@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="app_name">Quintana</string>
+    <string name="settings">Einstellungen</string>
+    <string name="back">Zurück</string>
+    <string name="edit_set">Set bearbeiten</string>
+    <string name="new_set">Neues Set</string>
+    <string name="new_set_hint">Arbeit, Pause und Runden festlegen</string>
+    <string name="start">Start</string>
+    <string name="save">Speichern</string>
+    <string name="name">Name</string>
+    <string name="page_position" tools:ignore="PluralsCandidate">Seite %1$d von %2$d</string>
+
+    <string name="phase_lead_in">Vorlauf</string>
+    <string name="phase_work">Arbeit</string>
+    <string name="phase_rest">Pause</string>
+    <string name="phase_done">Fertig</string>
+    <string name="rounds">Runden</string>
+    <string name="lead_in_label">Gleich geht’s los</string>
+
+    <string name="total">Gesamt %1$s</string>
+    <string name="total_with_lead_in">Gesamtdauer inkl. Vorlauf</string>
+    <string name="total_minutes">%1$s min</string>
+    <string name="less">%1$s: weniger</string>
+    <string name="more">%1$s: mehr</string>
+
+    <string name="pause">Pause</string>
+    <string name="resume">Weiter</string>
+    <string name="stop">Stoppen</string>
+    <string name="stop_hint">Zum Stoppen halten</string>
+    <string name="display_on">Display bleibt an</string>
+    <string name="paused">Pausiert</string>
+    <string name="then_rest">dann %1$s Pause</string>
+    <string name="then_round">dann Runde %1$d</string>
+    <string name="last_round">letzte Runde</string>
+    <string name="round_starts" tools:ignore="PluralsCandidate">Runde %1$d startet</string>
+    <plurals name="rounds_done">
+        <item quantity="one">%1$d Runde geschafft</item>
+        <item quantity="other">%1$d Runden geschafft</item>
+    </plurals>
+    <string name="progress_round">Runde %1$d</string>
+    <string name="progress_of">/ %1$d</string>
+    <string name="progress_after" tools:ignore="PluralsCandidate">nach Runde %1$d / %2$d</string>
+    <string name="progress_before">vor Runde 1 / %1$d</string>
+    <string name="progress_done">Geschafft</string>
+    <string name="remaining_total">noch %1$s</string>
+
+    <string name="lead_in_setting">Vorlauf-Warnung · gilt für alle Sets</string>
+    <string name="lead_in_before_round">Vor jeder Runde</string>
+    <string name="lead_in_detail">Countdown + Signal</string>
+    <string name="seconds" tools:ignore="PluralsCandidate">%1$d s</string>
+    <string name="off">Aus</string>
+    <string name="my_sets">Meine Sets</string>
+    <string name="no_sets">Noch keine Sets</string>
+    <string name="delete_set">%1$s löschen</string>
+    <string name="deleted">Gelöscht</string>
+    <string name="undo">Rückgängig</string>
+    <string name="version">Version %1$s</string>
+    <string name="summary">%1$s · %2$s · %3$s</string>
+    <string name="minutes" tools:ignore="PluralsCandidate">%1$s Min</string>
+    <string name="rest_part">%1$s Pause</string>
+    <string name="no_rest">ohne Pause</string>
+    <plurals name="round_count">
+        <item quantity="one">%1$d Runde</item>
+        <item quantity="other">%1$d Runden</item>
+    </plurals>
+
+    <string name="notification_channel">Laufender Timer</string>
+    <string name="notification_title">%1$s · %2$s</string>
+    <string name="notification_paused">Pausiert · %1$s %2$s</string>
+    <string name="notification_text" tools:ignore="PluralsCandidate">%1$s · Runde %2$d / %3$d · noch %4$s</string>
+</resources>

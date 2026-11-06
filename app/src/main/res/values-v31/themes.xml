@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ shows the shield on iron while the app starts. -->
+    <style name="Theme.Quintana" parent="Base.Theme.Quintana">
+        <item name="android:windowSplashScreenBackground">@color/eisen</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Iron, the ground of every screen; shown before Compose draws so the start does not flash. -->
+    <color name="eisen">#FF14110F</color>
+    <!-- Or, the gold of the mark; tints the notification. -->
+    <color name="or">#FFD4A43A</color>
+</resources>

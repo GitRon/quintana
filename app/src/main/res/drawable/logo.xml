@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The mark: a shield with the quintana, whose arm reads as a clock hand. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <path
+        android:pathData="M32,4 L56,12 V30 C56,46 45,56 32,60 C19,56 8,46 8,30 V12 Z"
+        android:strokeColor="#FFD4A43A"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M32,21 V50 M17,24 L47,18 M25,50 H39"
+        android:strokeColor="#FFF2EBDD"
+        android:strokeLineCap="round"
+        android:strokeWidth="3.5" />
+    <path
+        android:fillColor="#FFD9442E"
+        android:pathData="M42.5,18 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0 Z" />
+    <path
+        android:fillColor="#FFD4A43A"
+        android:pathData="M12,22 H22 V27 C22,30.5 19.5,32.5 17,33.5 C14.5,32.5 12,30.5 12,27 Z" />
+</vector>
