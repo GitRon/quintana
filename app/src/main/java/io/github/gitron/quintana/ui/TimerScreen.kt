@@ -67,8 +67,8 @@ import io.github.gitron.quintana.timer.Snapshot
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/** How long the stop button has to be held, so a gloved hand does not stop by accident. */
-private const val HOLD_TO_STOP_MILLIS = 1000
+/** How long the reset button has to be held while the timer runs, so a gloved hand does not reset by accident. */
+private const val HOLD_TO_RESET_MILLIS = 1000
 
 @Composable
 fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifier: Modifier = Modifier) {
@@ -85,11 +85,11 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
     val done = snapshot.phase == Phase.DONE
     val colors = phaseColors(snapshot.phase)
     val background by animateColorAsState(colors.background, label = "background")
-    var showStopHint by remember { mutableStateOf(false) }
-    LaunchedEffect(showStopHint) {
-        if (showStopHint) {
-            delay(2000)
-            showStopHint = false
+    var showResetHint by remember { mutableStateOf(false) }
+    LaunchedEffect(showResetHint) {
+        if (showResetHint) {
+            delay(2500)
+            showResetHint = false
         }
     }
 
@@ -167,14 +167,16 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
                 .height(24.dp),
             contentAlignment = Alignment.Center,
         ) {
-            if (showStopHint) Text(stringResource(R.string.stop_hint), fontSize = 14.sp, color = colors.secondary)
+            if (showResetHint) {
+                Text(stringResource(R.string.reset_hint), fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = colors.accent)
+            }
         }
         Spacer(Modifier.height(8.dp))
         if (done) {
             BigButton(stringResource(R.string.back), Pergament, onClose, Modifier.fillMaxWidth())
         } else {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                HoldToStopButton(colors, onStop = onClose, onTap = { showStopHint = true })
+                ResetButton(colors, paused = run.clock.isPaused, onReset = onClose, onTapWhileRunning = { showResetHint = true })
                 BigButton(
                     stringResource(if (run.clock.isPaused) R.string.resume else R.string.pause),
                     colors.accent,
@@ -272,19 +274,21 @@ private fun Segments(snapshot: Snapshot, colors: PhaseColors) {
 }
 
 /**
- * Stops the run only when held for a second, filling up meanwhile. A tap just
- * explains that. Screen readers get the stop as a long-press action.
+ * Resets the run: back to the pager, ready for START. While the timer runs it has to
+ * be held for a second, filling up meanwhile, and a tap only explains that; once
+ * paused, a tap resets. Screen readers get the reset as a long-press action.
  */
 @Composable
-private fun HoldToStopButton(colors: PhaseColors, onStop: () -> Unit, onTap: () -> Unit) {
-    val currentOnStop by rememberUpdatedState(onStop)
-    val currentOnTap by rememberUpdatedState(onTap)
+private fun ResetButton(colors: PhaseColors, paused: Boolean, onReset: () -> Unit, onTapWhileRunning: () -> Unit) {
+    val currentOnReset by rememberUpdatedState(onReset)
+    val currentOnTap by rememberUpdatedState(onTapWhileRunning)
+    val currentPaused by rememberUpdatedState(paused)
     val progress = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
-    val stopLabel = stringResource(R.string.stop)
-    val hint = stringResource(R.string.stop_hint)
+    val resetLabel = stringResource(R.string.reset)
+    val hint = stringResource(R.string.reset_hint)
     val shape = RoundedCornerShape(22.dp)
-    val fill = Pergament.copy(alpha = 0.3f)
+    val fill = colors.accent.copy(alpha = 0.45f)
     Box(
         Modifier
             .size(80.dp)
@@ -295,34 +299,38 @@ private fun HoldToStopButton(colors: PhaseColors, onStop: () -> Unit, onTap: () 
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
-                        val hold = scope.launch {
-                            progress.snapTo(0f)
-                            progress.animateTo(1f, tween(HOLD_TO_STOP_MILLIS, easing = LinearEasing))
-                            currentOnStop()
-                        }
-                        tryAwaitRelease()
-                        if (hold.isActive) {
-                            hold.cancel()
-                            currentOnTap()
-                            scope.launch { progress.animateTo(0f, tween(150)) }
+                        if (currentPaused) {
+                            if (tryAwaitRelease()) currentOnReset()
+                        } else {
+                            val hold = scope.launch {
+                                progress.snapTo(0f)
+                                progress.animateTo(1f, tween(HOLD_TO_RESET_MILLIS, easing = LinearEasing))
+                                currentOnReset()
+                            }
+                            tryAwaitRelease()
+                            if (hold.isActive) {
+                                hold.cancel()
+                                currentOnTap()
+                                scope.launch { progress.animateTo(0f, tween(150)) }
+                            }
                         }
                     },
                 )
             }
             .semantics {
                 role = Role.Button
-                contentDescription = "$stopLabel. $hint"
+                contentDescription = if (paused) resetLabel else "$resetLabel. $hint"
                 onClick {
-                    currentOnTap()
+                    if (currentPaused) currentOnReset() else currentOnTap()
                     true
                 }
-                onLongClick(stopLabel) {
-                    currentOnStop()
+                onLongClick(resetLabel) {
+                    currentOnReset()
                     true
                 }
             },
         contentAlignment = Alignment.Center,
     ) {
-        Icon(QuintanaIcons.Stop, contentDescription = null, tint = Pergament, modifier = Modifier.size(24.dp))
+        Icon(QuintanaIcons.Reset, contentDescription = null, tint = Pergament, modifier = Modifier.size(28.dp))
     }
 }

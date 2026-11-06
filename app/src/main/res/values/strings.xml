@@ -26,8 +26,8 @@
 
     <string name="pause">Pause</string>
     <string name="resume">Weiter</string>
-    <string name="stop">Stoppen</string>
-    <string name="stop_hint">Zum Stoppen halten</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="reset_hint">Zum Zurücksetzen halten</string>
     <string name="display_on">Display bleibt an</string>
     <string name="paused">Pausiert</string>
     <string name="then_rest">dann %1$s Pause</string>

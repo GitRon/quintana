@@ -4,7 +4,7 @@ Native Android interval timer with a neat medieval name. Create sets of work, re
 swipe to the one you want and start. Nothing more: no sports, no accounts, no statistics.
 
 The quintain was the rotating dummy knights trained on: whoever hit it had to move on before its
-counter-arm swung back. The logo shows a shield with the quintain, whose arm doubles as a clock hand.
+counter-arm swung back. The logo is a stopwatch whose hand is the arm of the quintain.
 
 - Portrait only, dark theme only, German interface.
 - Completely offline: the app has **no `INTERNET` permission**. The sets are kept in the app's
@@ -45,8 +45,9 @@ Requires Android 10 or later.
 - The pencil edits the shown set. Editing never creates a new set; **Zurück** drops the changes.
 - **START** runs the set: the lead-in (gold), then work (red) and rest (blue) in turn. The last
   seconds of each rest are the lead-in to the next round. No rest follows the last round.
-- **PAUSE** freezes the run. The stop button has to be **held for a second**, so a gloved hand does
-  not end the run by accident. The system back button does nothing while a run is on.
+- **PAUSE** freezes the run. The reset button ends it and goes back to the set, ready for **START**:
+  once paused with a tap, while the timer runs only when **held for a second**, so a gloved hand does
+  not reset by accident. The system back button does nothing while a run is on.
 - The settings hold the lead-in for all sets (10 s by default, 0 switches it off) and the list
   of sets, where a set is deleted. A snackbar offers undo for five seconds.
 
