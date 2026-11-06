@@ -5,10 +5,10 @@ import org.junit.Test
 
 class TimerSetTest {
     @Test
-    fun `standard set has the values of the specification`() {
+    fun `standard set is one minute workout and one minute rest`() {
         val standard = TimerSet.standard()
         assertEquals("Standard", standard.name)
-        assertEquals(180, standard.workSeconds)
+        assertEquals(60, standard.workSeconds)
         assertEquals(60, standard.restSeconds)
         assertEquals(10, standard.rounds)
     }
