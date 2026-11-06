@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920">
+<rect width="1080" height="1920" fill="#1B1B1B"/>
+<path d="M0 1280Q540 1060 1080 1280V1920H0Z" fill="#211F1B"/>
+<g transform="translate(284 500) scale(1)">
+
+<g fill="none" stroke="#D4AF37" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M224 66V43h64v23"/>
+  <path d="M206 42h100" stroke-width="22"/>
+  <circle cx="256" cy="278" r="188"/>
+</g>
+<g fill="#F5EAD7">
+  <path d="M249 112h14l5 42h-24z"/>
+  <path d="M121 174l12-12 32 31-10 13z"/>
+  <path d="M379 174l-12-12-32 31 10 13z"/>
+  <path d="M88 270h42v16H88z"/>
+  <path d="M382 270h42v16h-42z"/>
+  <path d="M249 402h14l5 42h-24z"/>
+  <path d="M145 379l12-12 30 30-12 12z"/>
+  <path d="M367 379l-12-12-30 30 12 12z"/>
+</g>
+<!-- Pivoting quintain arm -->
+<path d="M256 278L379 193" stroke="#F5EAD7" stroke-width="19" stroke-linecap="round"/>
+<path d="M256 278L165 342" stroke="#F5EAD7" stroke-width="19" stroke-linecap="round"/>
+<!-- Shield counterweight -->
+<path d="M127 329l38 15 38-15-5 57c-5 34-25 54-33 60-9-6-29-26-34-60z"
+      fill="#1B1B1B" stroke="#F5EAD7" stroke-width="11" stroke-linejoin="round"/>
+<path d="M145 347l20 8 20-8-3 38c-3 19-12 31-17 36-5-5-14-17-17-36z"
+      fill="none" stroke="#D4AF37" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="256" cy="278" r="30" fill="#D4AF37"/>
+<circle cx="256" cy="278" r="19" fill="#B22222"/>
+</g>
+<text x="540" y="1190" text-anchor="middle" fill="#F5EAD7" font-family="Cinzel, 'Times New Roman', serif" font-size="94" letter-spacing="9">QUINTANA</text>
+<path d="M330 1245H750" stroke="#D4AF37" stroke-width="4"/>
+<path d="M540 1233l12 12-12 12-12-12z" fill="#D4AF37"/>
+</svg>

@@ -16,20 +16,21 @@ import androidx.compose.ui.unit.sp
 import io.github.gitron.quintana.R
 import io.github.gitron.quintana.timer.Phase
 
-// Heraldic tinctures of the corporate identity: red is the workout, blue is rest, gold is the end of a round and the mark.
-val Eisen = Color(0xFF14110F)
-val Kohle = Color(0xFF1F1B18)
-val Linie = Color(0xFF3A332D)
-val Pergament = Color(0xFFF2EBDD)
+// Charcoal, antique gold and ivory come from the brand kit in brand/.
+// Heraldic tinctures for the phases: red is the workout, blue is rest, gold is the end of a round.
+val Eisen = Color(0xFF1B1B1B)
+val Kohle = Color(0xFF262421)
+val Linie = Color(0xFF3B3630)
+val Pergament = Color(0xFFF5EAD7)
 val TextSecondary = Color(0xFFA89E8E)
 val Gules = Color(0xFFD9442E)
 val Azur = Color(0xFF4C8FD6)
-val Or = Color(0xFFD4A43A)
-val ClosingBackground = Color(0xFF1C1810)
+val Or = Color(0xFFD4AF37)
+val ClosingBackground = Color(0xFF221E12)
 val Loeschen = Color(0xFFE0705F)
 
 /** Ring track and dividers on iron. */
-val Track = Color(0xFF2A2420)
+val Track = Color(0xFF2E2B27)
 
 /** The muted plus of the page indicator when the new set page is not shown. */
 val IndicatorInactive = Color(0xFF6E655A)
@@ -52,9 +53,9 @@ fun phaseColors(phase: Phase): PhaseColors = when (phase) {
     Phase.CLOSING -> PhaseColors(
         accent = Or,
         background = ClosingBackground,
-        surface = Color(0xFF26200F),
-        line = Color(0xFF3D3420),
-        track = Color(0xFF2E2717),
+        surface = Color(0xFF2C2614),
+        line = Color(0xFF443A22),
+        track = Color(0xFF342C19),
         secondary = Color(0xFFB5A98F),
     )
     Phase.WORKOUT -> IronPhase
