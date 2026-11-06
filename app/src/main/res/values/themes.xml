@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Quintana only has a dark theme. -->
+    <style name="Base.Theme.Quintana" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/eisen</item>
+    </style>
+
+    <style name="Theme.Quintana" parent="Base.Theme.Quintana" />
+</resources>
