@@ -25,13 +25,17 @@ data class Snapshot(
     val rounds: Int,
     /** Rounds that are over. */
     val completedRounds: Int,
-    val phaseRemainingMillis: Long,
-    val phaseDurationMillis: Long,
+    /**
+     * What the clock counts down: the whole round during the workout and its closing
+     * seconds, so a 3 minute round starts at 3:00; the rest during rest.
+     */
+    val countdownMillis: Long,
+    val countdownDurationMillis: Long,
     val totalRemainingMillis: Long,
 ) {
-    /** Share of the current phase that is over, from 0 to 1. */
-    val phaseProgress: Float
-        get() = if (phaseDurationMillis <= 0) 1f else 1f - phaseRemainingMillis.toFloat() / phaseDurationMillis
+    /** Share of the countdown that is over, from 0 to 1. */
+    val countdownProgress: Float
+        get() = if (countdownDurationMillis <= 0) 1f else 1f - countdownMillis.toFloat() / countdownDurationMillis
 }
 
 /**
@@ -54,27 +58,32 @@ class Schedule(val rounds: Int, val segments: List<Segment>, private val roundEn
                 round = rounds,
                 rounds = rounds,
                 completedRounds = rounds,
-                phaseRemainingMillis = 0,
-                phaseDurationMillis = 0,
+                countdownMillis = 0,
+                countdownDurationMillis = 0,
                 totalRemainingMillis = 0,
             )
         }
         val segment = segments[index]
+        val counted = if (segment.phase == Phase.REST) listOf(segment) else roundParts(segment.round)
+        val countdownEnd = counted.last().endMillis
         return Snapshot(
             phase = segment.phase,
             round = segment.round,
             rounds = rounds,
             completedRounds = if (segment.phase == Phase.REST) segment.round else segment.round - 1,
-            phaseRemainingMillis = segment.endMillis - elapsedMillis.coerceAtLeast(0),
-            phaseDurationMillis = segment.durationMillis,
+            countdownMillis = countdownEnd - elapsedMillis.coerceAtLeast(0),
+            countdownDurationMillis = countdownEnd - counted.first().startMillis,
             totalRemainingMillis = totalMillis - elapsedMillis.coerceAtLeast(0),
         )
     }
 
+    /** The workout and closing seconds of [round], without the rest after it. */
+    private fun roundParts(round: Int) = segments.filter { it.round == round && it.phase != Phase.REST }
+
     private fun buildCues(): List<Cue> {
         val cues = mutableListOf<Cue>()
         for (round in 1..rounds) {
-            val parts = segments.filter { it.round == round && it.phase != Phase.REST }
+            val parts = roundParts(round)
             val start = parts.first().startMillis
             val end = parts.last().endMillis
             cues += Cue(start, Signal.ROUND_START)

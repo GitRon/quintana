@@ -127,8 +127,10 @@ class ScheduleTest {
         assertEquals(3, snapshot.round)
         assertEquals(12, snapshot.rounds)
         assertEquals(2, snapshot.completedRounds)
-        assertEquals(92_000L, snapshot.phaseRemainingMillis)
-        assertEquals(110_000L, snapshot.phaseDurationMillis)
+        // The clock counts down the whole round, closing seconds included.
+        assertEquals(102_000L, snapshot.countdownMillis)
+        assertEquals(120_000L, snapshot.countdownDurationMillis)
+        assertEquals(0.15f, snapshot.countdownProgress, 0.0001f)
         assertEquals(schedule.totalMillis - 378_000, snapshot.totalRemainingMillis)
     }
 
@@ -140,12 +142,24 @@ class ScheduleTest {
         assertEquals(Phase.CLOSING, closing.phase)
         assertEquals(1, closing.round)
         assertEquals(0, closing.completedRounds)
-        assertEquals(7_500L, closing.phaseRemainingMillis)
+        assertEquals(7_500L, closing.countdownMillis)
+        assertEquals(30_000L, closing.countdownDurationMillis)
 
         val rest = schedule.snapshot(31_000)
         assertEquals(Phase.REST, rest.phase)
         assertEquals(1, rest.round)
         assertEquals(1, rest.completedRounds)
+        assertEquals(14_000L, rest.countdownMillis)
+        assertEquals(15_000L, rest.countdownDurationMillis)
+    }
+
+    @Test
+    fun `a three minute round starts at 3 00`() {
+        val schedule = Schedule.of(set(work = 180, rest = 60, rounds = 3), roundEndWarningSeconds = 10)
+        assertEquals(Phase.WORKOUT, schedule.snapshot(0).phase)
+        assertEquals(180_000L, schedule.snapshot(0).countdownMillis)
+        assertEquals(Phase.CLOSING, schedule.snapshot(170_000).phase)
+        assertEquals(10_000L, schedule.snapshot(170_000).countdownMillis)
     }
 
     @Test
@@ -156,6 +170,6 @@ class ScheduleTest {
         assertEquals(Phase.DONE, done.phase)
         assertEquals(3, done.completedRounds)
         assertEquals(0L, done.totalRemainingMillis)
-        assertEquals(1f, done.phaseProgress)
+        assertEquals(1f, done.countdownProgress)
     }
 }

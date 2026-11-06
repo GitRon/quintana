@@ -50,10 +50,10 @@ class RunTest {
     fun `pause freezes the run and resume continues it`() {
         val paused = Run.start(set, roundEndWarningSeconds = 10, nowMillis = 0).togglePause(4_000)
         assertTrue(paused.clock.isPaused)
-        assertEquals(6_000L, paused.snapshot(600_000).phaseRemainingMillis)
+        assertEquals(16_000L, paused.snapshot(600_000).countdownMillis)
 
         val resumed = paused.togglePause(600_000)
-        assertEquals(5_000L, resumed.snapshot(601_000).phaseRemainingMillis)
+        assertEquals(15_000L, resumed.snapshot(601_000).countdownMillis)
         val finished = resumed.copy(finished = true)
         assertEquals(finished, finished.togglePause(700_000))
     }
