@@ -106,7 +106,6 @@ fun EditScreen(
                 HorizontalDivider(color = Track)
                 StepperRow(
                     label = stringResource(R.string.phase_closing),
-                    detail = stringResource(R.string.warning_detail),
                     color = Or,
                     shown = if (warning == 0) stringResource(R.string.off) else stringResource(R.string.seconds, warning),
                     steps = Limits.roundEndWarning,
@@ -181,7 +180,6 @@ private fun StepperRow(
     shown: String,
     steps: Steps,
     value: Int,
-    detail: String? = null,
     onChange: (Int) -> Unit,
 ) {
     Row(
@@ -190,10 +188,7 @@ private fun StepperRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Dot(color)
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(label, fontSize = 18.sp, color = Pergament)
-            if (detail != null) Text(detail, fontSize = 13.sp, color = TextSecondary)
-        }
+        Text(label, fontSize = 18.sp, color = Pergament, modifier = Modifier.weight(1f))
         Stepper(
             shown = shown,
             label = label,

@@ -5,7 +5,7 @@
     <string name="back">Zurück</string>
     <string name="edit_set">Set bearbeiten</string>
     <string name="new_set">Neues Set</string>
-    <string name="new_set_hint">Arbeit, Pause und Runden festlegen</string>
+    <string name="new_set_hint">Workout, Pause und Runden festlegen</string>
     <string name="start">Start</string>
     <string name="save">Speichern</string>
     <string name="name">Name</string>
@@ -42,12 +42,14 @@
     <string name="progress_done">Geschafft</string>
     <string name="remaining_total">noch %1$s</string>
 
-    <string name="warning_detail">Warnung vor Rundenende</string>
     <string name="seconds" tools:ignore="PluralsCandidate">%1$d s</string>
     <string name="off">Aus</string>
     <string name="my_sets">Meine Sets</string>
     <string name="no_sets">Noch keine Sets</string>
     <string name="delete_set">%1$s löschen</string>
+    <string name="move_set">%1$s verschieben</string>
+    <string name="move_up">Nach oben</string>
+    <string name="move_down">Nach unten</string>
     <string name="deleted">Gelöscht</string>
     <string name="undo">Rückgängig</string>
     <string name="version">Version %1$s</string>

@@ -54,7 +54,9 @@ Requires Android 10 or later.
 - **PAUSE** freezes the run. The reset button ends it and goes back to the set, ready for **START**:
   once paused with a tap, while the timer runs only when **held for a second**, so a gloved hand does
   not reset by accident. The system back button does nothing while a run is on.
-- The settings list the sets, where a set is deleted. A snackbar offers undo for five seconds.
+- The settings list the sets. Drag a set by its handle to change the order of the pager; screen
+  readers offer „Nach oben“ and „Nach unten“ instead. A set is deleted there too, with five seconds
+  to undo it.
 
 ### Signals
 

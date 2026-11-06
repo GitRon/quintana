@@ -112,6 +112,7 @@ fun QuintanaApp(viewModel: QuintanaViewModel) {
                     library = current,
                     onBack = back,
                     onDelete = delete,
+                    onMove = viewModel::move,
                     onCreate = { viewModel.show(Screen.Edit(setId = null, from = Screen.Settings)) },
                 )
             }

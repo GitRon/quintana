@@ -86,6 +86,18 @@ class LibraryTest {
     }
 
     @Test
+    fun `moving a set shifts the ones in between`() {
+        val third = TimerSet(id = "c", name = "Kraft", workSeconds = 45, restSeconds = 15, rounds = 5)
+        val three = library.save(third)
+        assertEquals(listOf("c", "a", "b"), three.move(2, 0).sets.map { it.id })
+        assertEquals(listOf("b", "a", "c"), three.move(0, 1).sets.map { it.id })
+        assertEquals(listOf("b", "c", "a"), three.move(0, 2).sets.map { it.id })
+        assertSame(three, three.move(1, 1))
+        assertSame(three, three.move(0, 3))
+        assertEquals("b", three.move(1, 0).lastSelectedSetId)
+    }
+
+    @Test
     fun `undo puts a deleted set back at its place`() {
         val deleted = library.delete("a")
         assertEquals(listOf("b"), deleted.sets.map { it.id })

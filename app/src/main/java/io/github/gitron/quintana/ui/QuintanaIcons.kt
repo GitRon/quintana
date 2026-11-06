@@ -71,6 +71,14 @@ object QuintanaIcons {
         horizontalLineTo(22f)
     }
 
+    /** Two bars to grab a row by. */
+    val DragHandle = lines("DragHandle") {
+        moveTo(5f, 9f)
+        horizontalLineTo(19f)
+        moveTo(5f, 15f)
+        horizontalLineTo(19f)
+    }
+
     /** A circular arrow: back to the start of the set. */
     val Reset = lines("Reset") {
         moveTo(5.5f, 9f)
