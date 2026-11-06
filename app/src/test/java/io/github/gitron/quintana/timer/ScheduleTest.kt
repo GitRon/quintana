@@ -5,7 +5,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ScheduleTest {
-    private fun set(work: Int, rest: Int, rounds: Int) = TimerSet(name = "Test", workSeconds = work, restSeconds = rest, rounds = rounds)
+    private fun set(work: Int, rest: Int, rounds: Int, warning: Int = 10) =
+        TimerSet(name = "Test", workSeconds = work, restSeconds = rest, rounds = rounds, roundEndWarningSeconds = warning)
 
     private fun Schedule.phases() = segments.map { Triple(it.phase, it.round, it.startMillis / 1000 to it.endMillis / 1000) }
 
@@ -14,7 +15,7 @@ class ScheduleTest {
     /** 3 rounds of 0:30 with 0:15 rest and the warning 10 s before each round ends. */
     @Test
     fun `three rounds with a warning before each end`() {
-        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3, warning = 10))
 
         assertEquals(
             listOf(
@@ -47,13 +48,13 @@ class ScheduleTest {
     fun `the run starts right away and the total has no lead-in`() {
         val set = set(work = 120, rest = 60, rounds = 12)
         assertEquals(12 * 120 + 11 * 60, set.totalSeconds())
-        assertEquals(set.totalSeconds() * 1000L, Schedule.of(set, 10).totalMillis)
-        assertEquals(Phase.WORKOUT, Schedule.of(set, 10).snapshot(0).phase)
+        assertEquals(set.totalSeconds() * 1000L, Schedule.of(set).totalMillis)
+        assertEquals(Phase.WORKOUT, Schedule.of(set).snapshot(0).phase)
     }
 
     @Test
     fun `a round shorter than the warning is closing as a whole`() {
-        val schedule = Schedule.of(set(work = 5, rest = 10, rounds = 2), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 5, rest = 10, rounds = 2, warning = 10))
 
         assertEquals(
             listOf(
@@ -75,7 +76,7 @@ class ScheduleTest {
 
     @Test
     fun `without rest the next round starts where the last one ends`() {
-        val schedule = Schedule.of(set(work = 20, rest = 0, rounds = 2), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 20, rest = 0, rounds = 2, warning = 10))
 
         assertEquals(
             listOf(
@@ -92,7 +93,7 @@ class ScheduleTest {
 
     @Test
     fun `without warning there is no closing phase`() {
-        val schedule = Schedule.of(set(work = 20, rest = 15, rounds = 2), roundEndWarningSeconds = 0)
+        val schedule = Schedule.of(set(work = 20, rest = 15, rounds = 2, warning = 0))
 
         assertEquals(
             listOf(
@@ -110,7 +111,7 @@ class ScheduleTest {
 
     @Test
     fun `a warning shorter than three seconds ticks only within it`() {
-        val schedule = Schedule.of(set(work = 20, rest = 0, rounds = 1), roundEndWarningSeconds = 2)
+        val schedule = Schedule.of(set(work = 20, rest = 0, rounds = 1, warning = 2))
         assertEquals(
             listOf(0L to Signal.ROUND_START, 18L to Signal.WARNING, 19L to Signal.TICK, 20L to Signal.FINISH),
             schedule.cueSeconds(),
@@ -119,7 +120,7 @@ class ScheduleTest {
 
     @Test
     fun `snapshot during the workout`() {
-        val schedule = Schedule.of(set(work = 120, rest = 60, rounds = 12), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 120, rest = 60, rounds = 12, warning = 10))
         // Round 3 starts after two rounds and two rests: 2 × 180 = 360 s.
         val snapshot = schedule.snapshot(360_000 + 18_000)
 
@@ -136,7 +137,7 @@ class ScheduleTest {
 
     @Test
     fun `snapshot in the closing seconds and the rest after them`() {
-        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3, warning = 10))
 
         val closing = schedule.snapshot(22_500)
         assertEquals(Phase.CLOSING, closing.phase)
@@ -155,7 +156,7 @@ class ScheduleTest {
 
     @Test
     fun `a three minute round starts at 3 00`() {
-        val schedule = Schedule.of(set(work = 180, rest = 60, rounds = 3), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 180, rest = 60, rounds = 3, warning = 10))
         assertEquals(Phase.WORKOUT, schedule.snapshot(0).phase)
         assertEquals(180_000L, schedule.snapshot(0).countdownMillis)
         assertEquals(Phase.CLOSING, schedule.snapshot(170_000).phase)
@@ -164,7 +165,7 @@ class ScheduleTest {
 
     @Test
     fun `snapshot after the end is done`() {
-        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3), roundEndWarningSeconds = 10)
+        val schedule = Schedule.of(set(work = 30, rest = 15, rounds = 3, warning = 10))
         val done = schedule.snapshot(120_000)
 
         assertEquals(Phase.DONE, done.phase)

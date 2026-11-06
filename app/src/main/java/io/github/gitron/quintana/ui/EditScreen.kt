@@ -73,7 +73,8 @@ fun EditScreen(
     var work by rememberSaveable(initial?.id) { mutableIntStateOf(start.workSeconds) }
     var rest by rememberSaveable(initial?.id) { mutableIntStateOf(start.restSeconds) }
     var rounds by rememberSaveable(initial?.id) { mutableIntStateOf(start.rounds) }
-    val draft = start.copy(name = name, workSeconds = work, restSeconds = rest, rounds = rounds)
+    var warning by rememberSaveable(initial?.id) { mutableIntStateOf(start.roundEndWarningSeconds) }
+    val draft = start.copy(name = name, workSeconds = work, restSeconds = rest, rounds = rounds, roundEndWarningSeconds = warning)
 
     Column(
         modifier
@@ -102,6 +103,15 @@ fun EditScreen(
                 StepperRow(stringResource(R.string.phase_rest), Azur, formatShort(rest), Limits.rest, rest) { rest = it }
                 HorizontalDivider(color = Track)
                 StepperRow(stringResource(R.string.rounds), Pergament, rounds.toString(), Limits.rounds, rounds) { rounds = it }
+                HorizontalDivider(color = Track)
+                StepperRow(
+                    label = stringResource(R.string.phase_closing),
+                    detail = stringResource(R.string.warning_detail),
+                    color = Or,
+                    shown = if (warning == 0) stringResource(R.string.off) else stringResource(R.string.seconds, warning),
+                    steps = Limits.roundEndWarning,
+                    value = warning,
+                ) { warning = it }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(stringResource(R.string.total_duration), fontSize = 15.sp, color = TextSecondary)
@@ -171,6 +181,7 @@ private fun StepperRow(
     shown: String,
     steps: Steps,
     value: Int,
+    detail: String? = null,
     onChange: (Int) -> Unit,
 ) {
     Row(
@@ -179,7 +190,10 @@ private fun StepperRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Dot(color)
-        Text(label, fontSize = 18.sp, color = Pergament, modifier = Modifier.weight(1f))
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(label, fontSize = 18.sp, color = Pergament)
+            if (detail != null) Text(detail, fontSize = 13.sp, color = TextSecondary)
+        }
         Stepper(
             shown = shown,
             label = label,

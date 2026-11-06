@@ -42,10 +42,7 @@
     <string name="progress_done">Geschafft</string>
     <string name="remaining_total">noch %1$s</string>
 
-    <string name="warning_setting">Warnung vor Rundenende · gilt für alle Sets</string>
-    <string name="warning">Warnung vor Rundenende</string>
-    <string name="warning_before_end">Vor jedem Rundenende</string>
-    <string name="warning_detail">Countdown + Signal</string>
+    <string name="warning_detail">Warnung vor Rundenende</string>
     <string name="seconds" tools:ignore="PluralsCandidate">%1$d s</string>
     <string name="off">Aus</string>
     <string name="my_sets">Meine Sets</string>

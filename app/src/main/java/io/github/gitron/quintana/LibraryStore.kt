@@ -32,8 +32,7 @@ class LibraryStore(private val file: File) {
     suspend fun save(library: Library) = mutex.withLock {
         withContext(Dispatchers.IO) {
             val json = JSONObject()
-                .put("version", 1)
-                .put("roundEndWarningSeconds", library.roundEndWarningSeconds)
+                .put("version", 2)
                 .put("lastSelectedSetId", library.lastSelectedSetId ?: JSONObject.NULL)
                 .put("sets", JSONArray(library.sets.map { it.toJson() }))
             val temporary = File(file.path + ".tmp")
@@ -48,23 +47,24 @@ class LibraryStore(private val file: File) {
         .put("workSeconds", workSeconds)
         .put("restSeconds", restSeconds)
         .put("rounds", rounds)
+        .put("roundEndWarningSeconds", roundEndWarningSeconds)
 
     private fun JSONObject.toLibrary(): Library {
         val sets = getJSONArray("sets")
-        // The first builds had a lead-in before each round instead, stored under another name.
-        val warning = optInt("roundEndWarningSeconds", optInt("preRoundWarningSeconds", Limits.DEFAULT_ROUND_END_WARNING))
+        // Version 1 had one warning for all sets, the first builds a lead-in under another name.
+        val shared = optInt("roundEndWarningSeconds", optInt("preRoundWarningSeconds", Limits.DEFAULT_ROUND_END_WARNING))
         return Library(
-            sets = (0 until sets.length()).map { sets.getJSONObject(it).toSet() },
-            roundEndWarningSeconds = Limits.roundEndWarning.clamp(warning),
+            sets = (0 until sets.length()).map { sets.getJSONObject(it).toSet(shared) },
             lastSelectedSetId = if (isNull("lastSelectedSetId")) null else optString("lastSelectedSetId"),
         )
     }
 
-    private fun JSONObject.toSet() = TimerSet(
+    private fun JSONObject.toSet(sharedWarning: Int) = TimerSet(
         id = getString("id"),
         name = getString("name"),
         workSeconds = getInt("workSeconds"),
         restSeconds = getInt("restSeconds"),
         rounds = getInt("rounds"),
+        roundEndWarningSeconds = optInt("roundEndWarningSeconds", sharedWarning),
     ).clamped()
 }

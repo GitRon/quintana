@@ -111,7 +111,6 @@ fun QuintanaApp(viewModel: QuintanaViewModel) {
                 SettingsScreen(
                     library = current,
                     onBack = back,
-                    onRoundEndWarningChange = viewModel::setRoundEndWarning,
                     onDelete = delete,
                     onCreate = { viewModel.show(Screen.Edit(setId = null, from = Screen.Settings)) },
                 )

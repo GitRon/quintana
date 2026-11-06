@@ -40,8 +40,8 @@ data class Snapshot(
 
 /**
  * The fixed plan of one run of a set: workout and rest in turn, starting right
- * away with the first round. The last [roundEndWarningSeconds] of every round
- * are its closing seconds; a shorter round is closing as a whole. No rest
+ * away with the first round. The last [TimerSet.roundEndWarningSeconds] of every
+ * round are its closing seconds; a shorter round is closing as a whole. No rest
  * follows the last round.
  */
 class Schedule(val rounds: Int, val segments: List<Segment>, private val roundEndWarningMillis: Long) {
@@ -104,8 +104,8 @@ class Schedule(val rounds: Int, val segments: List<Segment>, private val roundEn
     }
 
     companion object {
-        fun of(set: TimerSet, roundEndWarningSeconds: Int): Schedule {
-            val warning = roundEndWarningSeconds * 1000L
+        fun of(set: TimerSet): Schedule {
+            val warning = set.roundEndWarningSeconds * 1000L
             val workout = set.workSeconds * 1000L
             val rest = set.restSeconds * 1000L
             val segments = mutableListOf<Segment>()
