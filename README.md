@@ -6,8 +6,8 @@ Native Android interval timer with a neat medieval name. Create sets of work, re
 swipe to the one you want and start. Nothing more: no sports, no accounts, no statistics.
 
 The quintain was the rotating dummy knights trained on: whoever hit it had to move on before its
-counter-arm swung back. The logo is a stopwatch whose hand is the arm of the quintain, with a shield
-as its counterweight; see [`brand/`](brand/README.md).
+counter-arm swung back. The logo is a knight's shield holding a stopwatch; see
+[`brand/`](brand/README.md).
 
 - Portrait only, dark theme only, German interface.
 - Completely offline: the app has **no `INTERNET` permission**. The sets are kept in the app's

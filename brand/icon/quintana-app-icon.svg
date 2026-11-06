@@ -1,28 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect width="512" height="512" rx="92" fill="#1B1B1B"/>
-<g fill="none" stroke="#D4AF37" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M224 66V43h64v23"/>
-  <path d="M206 42h100" stroke-width="22"/>
-  <circle cx="256" cy="278" r="188"/>
+<g transform="translate(36 34) scale(0.86)">
+    <path d="M256 44C214 82 156 100 86 104V262C86 364 166 432 256 474C346 432 426 364 426 262V104C356 100 298 82 256 44Z" fill="none" stroke="#D4AF37" stroke-width="30" stroke-linejoin="miter" stroke-miterlimit="8"/>
+    <path d="M256 190V166" fill="none" stroke="#F5EAD7" stroke-width="26"/>
+    <path d="M236 146A20 20 0 1 0 276 146A20 20 0 1 0 236 146Z" fill="none" stroke="#F5EAD7" stroke-width="13.0"/>
+    <path d="M182.4 210.3L169.0 195.4M329.6 210.3L343.0 195.4" fill="none" stroke="#F5EAD7" stroke-width="26" stroke-linecap="round"/>
+    <path d="M160 292A96 96 0 1 0 352 292A96 96 0 1 0 160 292Z" fill="none" stroke="#F5EAD7" stroke-width="22"/>
+    <path d="M256 292L324.0 292.0A68 68 0 1 1 256.0 224.0Z" fill="#F5EAD7"/>
+    <path d="M256 292L256.0 224.0A68 68 0 0 1 324.0 292.0Z" fill="#B22222"/>
 </g>
-<g fill="#F5EAD7">
-  <path d="M249 112h14l5 42h-24z"/>
-  <path d="M121 174l12-12 32 31-10 13z"/>
-  <path d="M379 174l-12-12-32 31 10 13z"/>
-  <path d="M88 270h42v16H88z"/>
-  <path d="M382 270h42v16h-42z"/>
-  <path d="M249 402h14l5 42h-24z"/>
-  <path d="M145 379l12-12 30 30-12 12z"/>
-  <path d="M367 379l-12-12-30 30 12 12z"/>
-</g>
-<!-- Pivoting quintain arm -->
-<path d="M256 278L379 193" stroke="#F5EAD7" stroke-width="19" stroke-linecap="round"/>
-<path d="M256 278L165 342" stroke="#F5EAD7" stroke-width="19" stroke-linecap="round"/>
-<!-- Shield counterweight -->
-<path d="M127 329l38 15 38-15-5 57c-5 34-25 54-33 60-9-6-29-26-34-60z"
-      fill="#1B1B1B" stroke="#F5EAD7" stroke-width="11" stroke-linejoin="round"/>
-<path d="M145 347l20 8 20-8-3 38c-3 19-12 31-17 36-5-5-14-17-17-36z"
-      fill="none" stroke="#D4AF37" stroke-width="5" stroke-linejoin="round"/>
-<circle cx="256" cy="278" r="30" fill="#D4AF37"/>
-<circle cx="256" cy="278" r="19" fill="#B22222"/>
 </svg>
