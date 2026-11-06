@@ -22,7 +22,7 @@ data class TimerSet(
 
     companion object {
         /** The set the app starts with, and the values a new set starts with. */
-        fun standard(name: String = "Standard") = TimerSet(name = name, workSeconds = 180, restSeconds = 60, rounds = 10)
+        fun standard(name: String = "Standard") = TimerSet(name = name, workSeconds = 60, restSeconds = 60, rounds = 10)
     }
 }
 
