@@ -10,7 +10,8 @@ class TimerSetTest {
         assertEquals("Standard", standard.name)
         assertEquals(60, standard.workSeconds)
         assertEquals(60, standard.restSeconds)
-        assertEquals(10, standard.rounds)
+        assertEquals(3, standard.rounds)
+        assertEquals(10, standard.roundEndWarningSeconds)
     }
 
     @Test
@@ -41,10 +42,11 @@ class TimerSetTest {
 
     @Test
     fun `clamped keeps values in range`() {
-        val wild = TimerSet(name = "x", workSeconds = 0, restSeconds = 9999, rounds = 500).clamped()
+        val wild = TimerSet(name = "x", workSeconds = 0, restSeconds = 9999, rounds = 500, roundEndWarningSeconds = 99).clamped()
         assertEquals(5, wild.workSeconds)
         assertEquals(3600, wild.restSeconds)
         assertEquals(99, wild.rounds)
+        assertEquals(30, wild.roundEndWarningSeconds)
     }
 
     @Test

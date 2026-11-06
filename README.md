@@ -45,16 +45,16 @@ Requires Android 10 or later.
 
 - Swipe between sets on the start screen; the last page creates a new set. The pager opens on
   the set used last.
-- The pencil edits the shown set. Editing never creates a new set; **Zurück** drops the changes.
+- The pencil edits the shown set: workout, rest, rounds and „Endspurt“, the warning before the end
+  of each round (10 s by default, 0 switches it off). A new set starts with 1:00 workout, 1:00 rest
+  and 3 rounds. Editing never creates a new set; **Zurück** drops the changes.
 - **START** runs the set right away: workout (red) and rest (blue) in turn. The clock counts down
   the whole round, so a 3 minute round starts at 3:00. Its last seconds turn gold („Endspurt“),
   with a warning tone, and count down as a big number. No rest follows the last round.
 - **PAUSE** freezes the run. The reset button ends it and goes back to the set, ready for **START**:
   once paused with a tap, while the timer runs only when **held for a second**, so a gloved hand does
   not reset by accident. The system back button does nothing while a run is on.
-- The settings hold the warning before the end of each round for all sets (10 s by default,
-  0 switches it off) and the list of sets, where a set is deleted. A snackbar offers undo for
-  five seconds.
+- The settings list the sets, where a set is deleted. A snackbar offers undo for five seconds.
 
 ### Signals
 
@@ -108,7 +108,7 @@ through manifest merging.
 
 ## How it works
 
-- `Schedule` turns a set and the round-end warning into segments (workout, closing seconds, rest)
+- `Schedule` turns a set with its round-end warning into segments (workout, closing seconds, rest)
   and the cues for the signals. `RunClock` measures the elapsed time on `SystemClock.elapsedRealtime()` and pauses.
 - `TimerService` is the foreground service: it plays the cues through `SignalPlayer` (`SoundPool`
   with transient, ducking audio focus) and updates the notification.

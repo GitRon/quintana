@@ -15,16 +15,18 @@ class LibraryTest {
 
     private val file: File get() = File(folder.root, "library.json")
 
-    private val sparring = TimerSet(id = "a", name = "Sparring", workSeconds = 120, restSeconds = 60, rounds = 12)
-    private val tabata = TimerSet(id = "b", name = "Tabata", workSeconds = 20, restSeconds = 10, rounds = 8)
-    private val library = Library(sets = listOf(sparring, tabata), roundEndWarningSeconds = 5, lastSelectedSetId = "b")
+    private val sparring =
+        TimerSet(id = "a", name = "Sparring", workSeconds = 120, restSeconds = 60, rounds = 12, roundEndWarningSeconds = 10)
+    private val tabata = TimerSet(id = "b", name = "Tabata", workSeconds = 20, restSeconds = 10, rounds = 8, roundEndWarningSeconds = 0)
+    private val library = Library(sets = listOf(sparring, tabata), lastSelectedSetId = "b")
 
     @Test
     fun `first start has the standard set selected and a 10 s warning`() = runTest {
         val first = LibraryStore(file).load()
         assertEquals(listOf("Standard"), first.sets.map { it.name })
         assertEquals(first.sets.single().id, first.lastSelectedSetId)
-        assertEquals(10, first.roundEndWarningSeconds)
+        assertEquals(10, first.sets.single().roundEndWarningSeconds)
+        assertEquals(3, first.sets.single().rounds)
     }
 
     @Test
@@ -42,6 +44,20 @@ class LibraryTest {
 
     /** Libraries written by released versions must stay readable, or users lose their sets after an update. */
     @Test
+    fun `reads libraries written by version 2`() = runTest {
+        file.writeText(
+            """
+            {"version":2,"lastSelectedSetId":"b","sets":[
+              {"id":"a","name":"Sparring","workSeconds":120,"restSeconds":60,"rounds":12,"roundEndWarningSeconds":10},
+              {"id":"b","name":"Tabata","workSeconds":20,"restSeconds":10,"rounds":8,"roundEndWarningSeconds":0}
+            ]}
+            """.trimIndent(),
+        )
+        assertEquals(library, LibraryStore(file).load())
+    }
+
+    /** Version 1 had one warning for all sets; every set takes it over. */
+    @Test
     fun `reads libraries written by version 1`() = runTest {
         file.writeText(
             """
@@ -51,7 +67,9 @@ class LibraryTest {
             ]}
             """.trimIndent(),
         )
-        assertEquals(library, LibraryStore(file).load())
+        val loaded = LibraryStore(file).load()
+        assertEquals(listOf(5, 5), loaded.sets.map { it.roundEndWarningSeconds })
+        assertEquals(library.sets.map { it.copy(roundEndWarningSeconds = 5) }, loaded.sets)
     }
 
     @Test
@@ -80,11 +98,5 @@ class LibraryTest {
         assertEquals(1, library.selectedIndex)
         assertEquals(0, library.delete("b").selectedIndex)
         assertEquals(0, Library(sets = emptyList()).selectedIndex)
-    }
-
-    @Test
-    fun `lead-in setting stays within its range`() {
-        assertEquals(0, library.withRoundEndWarning(-5).roundEndWarningSeconds)
-        assertEquals(30, library.withRoundEndWarning(45).roundEndWarningSeconds)
     }
 }

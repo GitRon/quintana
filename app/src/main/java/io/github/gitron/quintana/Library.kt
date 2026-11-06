@@ -1,9 +1,8 @@
 package io.github.gitron.quintana
 
-/** Everything the app stores: the sets in pager order and the global settings. */
+/** Everything the app stores: the sets in pager order and which one was used last. */
 data class Library(
     val sets: List<TimerSet>,
-    val roundEndWarningSeconds: Int = Limits.DEFAULT_ROUND_END_WARNING,
     /** The pager opens on this set when the app starts. */
     val lastSelectedSetId: String? = null,
 ) {
@@ -29,8 +28,6 @@ data class Library(
     }
 
     fun select(id: String): Library = copy(lastSelectedSetId = id)
-
-    fun withRoundEndWarning(seconds: Int): Library = copy(roundEndWarningSeconds = Limits.roundEndWarning.clamp(seconds))
 
     companion object {
         /** What the app starts with on its first launch. */

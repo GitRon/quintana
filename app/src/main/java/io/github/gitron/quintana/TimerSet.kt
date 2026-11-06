@@ -2,13 +2,17 @@ package io.github.gitron.quintana
 
 import java.util.UUID
 
-/** One interval workout: [rounds] of [workSeconds] with [restSeconds] between them. */
+/**
+ * One interval workout: [rounds] of [workSeconds] with [restSeconds] between them. The last
+ * [roundEndWarningSeconds] of each round are announced with a signal; 0 switches that off.
+ */
 data class TimerSet(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
     val workSeconds: Int,
     val restSeconds: Int,
     val rounds: Int,
+    val roundEndWarningSeconds: Int = Limits.DEFAULT_ROUND_END_WARNING,
 ) {
     /** Duration of a run. It starts with the first round, and no rest follows the last one. */
     fun totalSeconds(): Int = rounds * workSeconds + (rounds - 1) * restSeconds
@@ -18,11 +22,12 @@ data class TimerSet(
         workSeconds = Limits.work.clamp(workSeconds),
         restSeconds = Limits.rest.clamp(restSeconds),
         rounds = Limits.rounds.clamp(rounds),
+        roundEndWarningSeconds = Limits.roundEndWarning.clamp(roundEndWarningSeconds),
     )
 
     companion object {
         /** The set the app starts with, and the values a new set starts with. */
-        fun standard(name: String = "Standard") = TimerSet(name = name, workSeconds = 60, restSeconds = 60, rounds = 10)
+        fun standard(name: String = "Standard") = TimerSet(name = name, workSeconds = 60, restSeconds = 60, rounds = 3)
     }
 }
 
