@@ -1,35 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Launcher icon and splash screen: the mark on iron. -->
+<!-- Launcher icon and splash screen: the mark on charcoal. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- The mark scaled into the 66 dp safe zone of adaptive icons. -->
+    <!-- The mark (drawn on 512) scaled into the 66 dp safe zone of adaptive icons. -->
     <group
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:translateX="25.2"
-        android:translateY="24.5">
+        android:scaleX="0.14"
+        android:scaleY="0.14"
+        android:translateX="18.16"
+        android:translateY="18.58">
         <path
-            android:pathData="M10,36 a22,22 0 1,0 44,0 a22,22 0 1,0 -44,0"
-            android:strokeColor="#FFD4A43A"
-            android:strokeWidth="3.5" />
-        <path
-            android:pathData="M32,13.5 V9.5 M26.5,8 H37.5 M47.5,19.5 L50.5,16.5"
-            android:strokeColor="#FFD4A43A"
+            android:pathData="M224,66 V43 h64 v23"
+            android:strokeColor="#FFD4AF37"
             android:strokeLineCap="round"
-            android:strokeWidth="4" />
+            android:strokeLineJoin="round"
+            android:strokeWidth="18" />
         <path
-            android:pathData="M32,36 V51 M27,51 H37 M20,40 L44,32"
-            android:strokeColor="#FFF2EBDD"
+            android:pathData="M206,42 h100"
+            android:strokeColor="#FFD4AF37"
             android:strokeLineCap="round"
-            android:strokeWidth="3.5" />
+            android:strokeWidth="22" />
         <path
-            android:fillColor="#FFD9442E"
-            android:pathData="M40,32 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 Z" />
+            android:pathData="M68,278 a188,188 0 1,0 376,0 a188,188 0 1,0 -376,0"
+            android:strokeColor="#FFD4AF37"
+            android:strokeWidth="18" />
         <path
-            android:fillColor="#FFD4A43A"
-            android:pathData="M14,38 H22 V42 C22,45 20,46.5 18,47.5 C16,46.5 14,45 14,42 Z" />
+            android:fillColor="#FFF5EAD7"
+            android:pathData="M249,112 h14 l5,42 h-24 Z M121,174 l12,-12 32,31 -10,13 Z M379,174 l-12,-12 -32,31 10,13 Z M88,270 h42 v16 H88 Z M382,270 h42 v16 h-42 Z M249,402 h14 l5,42 h-24 Z M145,379 l12,-12 30,30 -12,12 Z M367,379 l-12,-12 -30,30 12,12 Z" />
+        <path
+            android:pathData="M256,278 L379,193 M256,278 L165,342"
+            android:strokeColor="#FFF5EAD7"
+            android:strokeLineCap="round"
+            android:strokeWidth="19" />
+        <path
+            android:fillColor="#FF1B1B1B"
+            android:pathData="M127,329 l38,15 38,-15 -5,57 c-5,34 -25,54 -33,60 -9,-6 -29,-26 -34,-60 Z"
+            android:strokeColor="#FFF5EAD7"
+            android:strokeLineJoin="round"
+            android:strokeWidth="11" />
+        <path
+            android:pathData="M145,347 l20,8 20,-8 -3,38 c-3,19 -12,31 -17,36 -5,-5 -14,-17 -17,-36 Z"
+            android:strokeColor="#FFD4AF37"
+            android:strokeLineJoin="round"
+            android:strokeWidth="5" />
+        <path
+            android:fillColor="#FFD4AF37"
+            android:pathData="M226,278 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0 Z" />
+        <path
+            android:fillColor="#FFB22222"
+            android:pathData="M237,278 a19,19 0 1,0 38,0 a19,19 0 1,0 -38,0 Z" />
     </group>
 </vector>

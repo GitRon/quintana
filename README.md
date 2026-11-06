@@ -1,10 +1,13 @@
+<p align="center"><img src="brand/quintana-readme-banner.png" alt="Quintana" width="720"></p>
+
 # Quintana
 
 Native Android interval timer with a neat medieval name. Create sets of work, rest and rounds,
 swipe to the one you want and start. Nothing more: no sports, no accounts, no statistics.
 
 The quintain was the rotating dummy knights trained on: whoever hit it had to move on before its
-counter-arm swung back. The logo is a stopwatch whose hand is the arm of the quintain.
+counter-arm swung back. The logo is a stopwatch whose hand is the arm of the quintain, with a shield
+as its counterweight; see [`brand/`](brand/README.md).
 
 - Portrait only, dark theme only, German interface.
 - Completely offline: the app has **no `INTERNET` permission**. The sets are kept in the app's
@@ -117,7 +120,8 @@ through manifest merging.
 
 - The timer service uses the foreground service type `specialUse`, since none of the specific
   types fits an interval timer. The Play Console asks for a short justification of it.
-- A 512 × 512 icon for the store listing is in [`art/quintana-icon.png`](art/quintana-icon.png).
+- A 512 × 512 icon for the store listing is in
+  [`brand/icon/quintana-store-icon-512.png`](brand/icon/quintana-store-icon-512.png).
 - Still open: a privacy policy for the listing, even though the app collects no data.
 
 ## Fonts
