@@ -36,6 +36,9 @@ Keep `quintana.jks` and its password somewhere safe outside the repository; the 
 the same key for every update. Without the secrets, CI builds a debug APK signed with a throwaway
 key, which never installs over a previous build.
 
+With the key, CI also builds a signed App Bundle for the Play Store, the `quintana-aab` artifact.
+With Play App Signing, this key is the upload key and Google signs the installed app.
+
 Requires Android 10 or later.
 
 ## Usage

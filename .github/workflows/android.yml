@@ -41,14 +41,16 @@ jobs:
         run: python3 .github/scripts/coverage_summary.py app/build/reports/kover/reportDebug.xml
 
       # With the signing key from the secrets, build a release APK that installs
-      # over the previous one. Without it (pull requests from forks) build a debug APK.
-      - name: Build APK
+      # over the previous one, plus the App Bundle for the Play Store. Without it
+      # (pull requests from forks) build a debug APK only.
+      - name: Build APK and App Bundle
         run: |
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/quintana.jks"
             export QUINTANA_KEYSTORE="$RUNNER_TEMP/quintana.jks"
-            ./gradlew assembleRelease
+            ./gradlew assembleRelease bundleRelease
             cp app/build/outputs/apk/release/app-release.apk quintana.apk
+            cp app/build/outputs/bundle/release/app-release.aab quintana.aab
           else
             echo "::warning::No signing key in the secrets, building a debug APK that cannot update a signed install"
             ./gradlew assembleDebug
@@ -71,6 +73,12 @@ jobs:
         with:
           name: quintana-apk
           path: quintana.apk
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: quintana-aab
+          path: quintana.aab
+          if-no-files-found: ignore
 
       - name: Upload reports
         if: ${{ !cancelled() }}
