@@ -76,6 +76,8 @@ class QuintanaViewModel(application: Application) : AndroidViewModel(application
 
     fun restore(deleted: Deleted) = update { it.restore(deleted.set, deleted.index) }
 
+    fun move(from: Int, to: Int) = update { it.move(from, to) }
+
     fun start(set: TimerSet) {
         update { it.select(set.id) }
         TimerService.start(getApplication<Application>(), Run.start(set, SystemClock.elapsedRealtime()))

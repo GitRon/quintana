@@ -2,6 +2,7 @@ package io.github.gitron.quintana.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -16,17 +17,32 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,18 +50,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import io.github.gitron.quintana.BuildConfig
 import io.github.gitron.quintana.Library
 import io.github.gitron.quintana.R
 import io.github.gitron.quintana.TimerSet
 import io.github.gitron.quintana.formatShort
+import kotlin.math.abs
 
-/** The list of sets, the only place where sets are deleted. */
+/** The list of sets, the only place where sets are deleted or put in another order. */
 @Composable
 fun SettingsScreen(
     library: Library,
     onBack: () -> Unit,
     onDelete: (TimerSet) -> Unit,
+    onMove: (from: Int, to: Int) -> Unit,
     onCreate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -72,16 +91,7 @@ fun SettingsScreen(
                         modifier = Modifier.padding(vertical = 8.dp),
                     )
                 } else {
-                    Column(
-                        Modifier
-                            .clip(RoundedCornerShape(18.dp))
-                            .background(Kohle),
-                    ) {
-                        library.sets.forEachIndexed { index, set ->
-                            if (index > 0) HorizontalDivider(color = Track)
-                            SetRow(set, onDelete = { onDelete(set) })
-                        }
-                    }
+                    SetList(library.sets, onDelete, onMove)
                 }
                 NewSetButton(onCreate)
             }
@@ -104,14 +114,137 @@ private fun Section(label: String, content: @Composable ColumnScope.() -> Unit) 
     }
 }
 
+/**
+ * The sets in pager order. A row is dragged by its handle; the new order is saved when it
+ * is dropped. Screen readers get "move up" and "move down" actions instead.
+ */
 @Composable
-private fun SetRow(set: TimerSet, onDelete: () -> Unit) {
-    val deleteLabel = stringResource(R.string.delete_set, set.name)
-    Row(
-        Modifier.padding(start = 16.dp, end = 10.dp, top = 12.dp, bottom = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+private fun SetList(sets: List<TimerSet>, onDelete: (TimerSet) -> Unit, onMove: (from: Int, to: Int) -> Unit) {
+    val currentSets by rememberUpdatedState(sets)
+    val currentOnMove by rememberUpdatedState(onMove)
+    // While a row is dragged, the order lives here; the library gets it when the row is dropped.
+    var order by remember { mutableStateOf(emptyList<TimerSet>()) }
+    var draggedId by remember { mutableStateOf<String?>(null) }
+    var dragStart by remember { mutableIntStateOf(-1) }
+    var dragOffset by remember { mutableFloatStateOf(0f) }
+    // Keeps showing the dropped order until the library has it, so the rows do not jump back.
+    var awaitingLibrary by remember { mutableStateOf(false) }
+    LaunchedEffect(sets) { awaitingLibrary = false }
+    val heights = remember { mutableStateMapOf<String, Int>() }
+    val gap = with(LocalDensity.current) { 1.dp.toPx() }
+
+    fun startDrag(id: String) {
+        order = currentSets
+        draggedId = id
+        dragStart = order.indexOfFirst { it.id == id }
+        dragOffset = 0f
+    }
+
+    fun dragBy(delta: Float) {
+        dragOffset += delta
+        val index = order.indexOfFirst { it.id == draggedId }
+        val neighbor = if (dragOffset > 0) index + 1 else index - 1
+        val other = order.getOrNull(neighbor) ?: return
+        val distance = (heights[other.id] ?: return) + gap
+        // Past half of its neighbor, the row trades places with it.
+        if (abs(dragOffset) > distance / 2) {
+            order = order.toMutableList().apply { add(neighbor, removeAt(index)) }
+            dragOffset += if (neighbor > index) -distance else distance
+        }
+    }
+
+    fun drop() {
+        val to = order.indexOfFirst { it.id == draggedId }
+        draggedId = null
+        dragOffset = 0f
+        if (dragStart >= 0 && to >= 0 && dragStart != to) {
+            awaitingLibrary = true
+            currentOnMove(dragStart, to)
+        }
+    }
+
+    val shown = if (draggedId != null || awaitingLibrary) order else sets
+    Column(
+        Modifier
+            .clip(RoundedCornerShape(18.dp))
+            .background(Track),
+        verticalArrangement = Arrangement.spacedBy(1.dp),
     ) {
+        shown.forEachIndexed { index, set ->
+            key(set.id) {
+                val dragging = set.id == draggedId
+                SetRow(
+                    set = set,
+                    dragging = dragging,
+                    onDelete = { onDelete(set) },
+                    onMoveUp = if (index > 0) ({ onMove(index, index - 1) }) else null,
+                    onMoveDown = if (index < shown.lastIndex) ({ onMove(index, index + 1) }) else null,
+                    modifier = Modifier
+                        .onSizeChanged { heights[set.id] = it.height }
+                        .zIndex(if (dragging) 1f else 0f)
+                        .graphicsLayer { translationY = if (dragging) dragOffset else 0f },
+                    handle = Modifier.pointerInput(set.id) {
+                        detectDragGestures(
+                            onDragStart = { startDrag(set.id) },
+                            onDragEnd = { drop() },
+                            onDragCancel = { drop() },
+                        ) { change, amount ->
+                            change.consume()
+                            dragBy(amount.y)
+                        }
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SetRow(
+    set: TimerSet,
+    dragging: Boolean,
+    onDelete: () -> Unit,
+    onMoveUp: (() -> Unit)?,
+    onMoveDown: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    handle: Modifier = Modifier,
+) {
+    val deleteLabel = stringResource(R.string.delete_set, set.name)
+    val moveLabel = stringResource(R.string.move_set, set.name)
+    val moveUpLabel = stringResource(R.string.move_up)
+    val moveDownLabel = stringResource(R.string.move_down)
+    Row(
+        modifier
+            .fillMaxWidth()
+            .background(if (dragging) Linie else Kohle)
+            .padding(end = 10.dp, top = 12.dp, bottom = 12.dp)
+            .semantics {
+                customActions = listOfNotNull(
+                    onMoveUp?.let { move ->
+                        CustomAccessibilityAction(moveUpLabel) {
+                            move()
+                            true
+                        }
+                    },
+                    onMoveDown?.let { move ->
+                        CustomAccessibilityAction(moveDownLabel) {
+                            move()
+                            true
+                        }
+                    },
+                )
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Icon(
+            QuintanaIcons.DragHandle,
+            contentDescription = moveLabel,
+            tint = TextSecondary,
+            modifier = handle
+                .size(48.dp)
+                .padding(13.dp),
+        )
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
             Text(
                 set.name,

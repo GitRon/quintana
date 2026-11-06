@@ -20,6 +20,12 @@ data class Library(
 
     fun delete(id: String): Library = copy(sets = sets.filterNot { it.id == id })
 
+    /** Moves the set at [from] to [to]; the sets in between shift by one. */
+    fun move(from: Int, to: Int): Library {
+        if (from !in sets.indices || to !in sets.indices || from == to) return this
+        return copy(sets = sets.toMutableList().apply { add(to, removeAt(from)) })
+    }
+
     /** Puts a deleted [set] back where it was, so undo restores the pager order. */
     fun restore(set: TimerSet, index: Int): Library {
         if (sets.any { it.id == set.id }) return this
