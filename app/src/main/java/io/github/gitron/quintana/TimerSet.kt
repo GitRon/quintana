@@ -10,8 +10,8 @@ data class TimerSet(
     val restSeconds: Int,
     val rounds: Int,
 ) {
-    /** Duration of a run including the lead-in before the first round. No rest follows the last round. */
-    fun totalSeconds(preRoundWarningSeconds: Int): Int = preRoundWarningSeconds + rounds * workSeconds + (rounds - 1) * restSeconds
+    /** Duration of a run. It starts with the first round, and no rest follows the last one. */
+    fun totalSeconds(): Int = rounds * workSeconds + (rounds - 1) * restSeconds
 
     /** Values outside the allowed ranges, e.g. from an edited file, moved to the nearest allowed one. */
     fun clamped() = copy(
@@ -54,8 +54,8 @@ object Limits {
     val work = Steps(min = 5, max = 3600, step = 5)
     val rest = Steps(min = 0, max = 3600, step = 5)
     val rounds = Steps(min = 1, max = 99, step = 1)
-    val preRoundWarning = Steps(min = 0, max = 30, step = 1)
-    const val DEFAULT_PRE_ROUND_WARNING = 10
+    val roundEndWarning = Steps(min = 0, max = 30, step = 1)
+    const val DEFAULT_ROUND_END_WARNING = 10
 }
 
 /**

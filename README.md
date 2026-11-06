@@ -43,20 +43,21 @@ Requires Android 10 or later.
 - Swipe between sets on the start screen; the last page creates a new set. The pager opens on
   the set used last.
 - The pencil edits the shown set. Editing never creates a new set; **Zurück** drops the changes.
-- **START** runs the set: the lead-in (gold), then work (red) and rest (blue) in turn. The last
-  seconds of each rest are the lead-in to the next round. No rest follows the last round.
+- **START** runs the set right away: workout (red) and rest (blue) in turn. The last seconds of
+  each round turn gold („Endspurt“) and count down as a big number. No rest follows the last round.
 - **PAUSE** freezes the run. The reset button ends it and goes back to the set, ready for **START**:
   once paused with a tap, while the timer runs only when **held for a second**, so a gloved hand does
   not reset by accident. The system back button does nothing while a run is on.
-- The settings hold the lead-in for all sets (10 s by default, 0 switches it off) and the list
-  of sets, where a set is deleted. A snackbar offers undo for five seconds.
+- The settings hold the warning before the end of each round for all sets (10 s by default,
+  0 switches it off) and the list of sets, where a set is deleted. A snackbar offers undo for
+  five seconds.
 
 ### Signals
 
 | Event | Sound |
 | --- | --- |
-| Lead-in begins | two short high tones |
-| Last 3 s of the lead-in | one tick per second |
+| Warning before the round ends | two short high tones |
+| Last 3 s of the round | one tick per second |
 | Round begins | bell, once |
 | Round ends | bell, twice |
 | Set finished | bell, three times |
@@ -103,8 +104,8 @@ through manifest merging.
 
 ## How it works
 
-- `Schedule` turns a set and the lead-in into segments (lead-in, work, rest) and the cues for the
-  signals. `RunClock` measures the elapsed time on `SystemClock.elapsedRealtime()` and pauses.
+- `Schedule` turns a set and the round-end warning into segments (workout, closing seconds, rest)
+  and the cues for the signals. `RunClock` measures the elapsed time on `SystemClock.elapsedRealtime()` and pauses.
 - `TimerService` is the foreground service: it plays the cues through `SignalPlayer` (`SoundPool`
   with transient, ducking audio focus) and updates the notification.
 - `ActiveRun` holds the run shared by the service and the Compose UI, which redraws the ring every

@@ -126,16 +126,7 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
         Spacer(Modifier.height(16.dp))
         Text(
             phaseLabel(snapshot.phase),
-            style = capitals(
-                30.sp,
-                if (snapshot.phase ==
-                    Phase.LEAD_IN
-                ) {
-                    0.2f
-                } else {
-                    0.28f
-                },
-            ),
+            style = capitals(30.sp, if (snapshot.phase == Phase.CLOSING) 0.2f else 0.28f),
             color = colors.accent,
         )
         BoxWithConstraints(
@@ -151,7 +142,8 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
             val scale = ring / 310.dp
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 val seconds = secondsLeft(snapshot.phaseRemainingMillis)
-                if (snapshot.phase == Phase.LEAD_IN) {
+                // The closing seconds count down as a bare number, readable from across the room.
+                if (snapshot.phase == Phase.CLOSING) {
                     Text(seconds.toString(), style = numbers(fixedSp(150.dp * scale)), color = colors.accent)
                 } else {
                     Text(formatClock(seconds), style = numbers(fixedSp(108.dp * scale)), color = Pergament)
@@ -192,8 +184,8 @@ fun TimerScreen(run: Run, onTogglePause: () -> Unit, onClose: () -> Unit, modifi
 @Composable
 private fun phaseLabel(phase: Phase): String = stringResource(
     when (phase) {
-        Phase.LEAD_IN -> R.string.lead_in_label
-        Phase.WORK -> R.string.phase_work
+        Phase.WORKOUT -> R.string.phase_workout
+        Phase.CLOSING -> R.string.phase_closing
         Phase.REST -> R.string.phase_rest
         Phase.DONE -> R.string.phase_done
     },
@@ -204,10 +196,9 @@ private fun phaseLabel(phase: Phase): String = stringResource(
 private fun subline(run: Run, snapshot: Snapshot): String = when {
     snapshot.phase == Phase.DONE -> pluralStringResource(R.plurals.rounds_done, snapshot.rounds, snapshot.rounds)
     run.clock.isPaused -> stringResource(R.string.paused)
-    snapshot.phase == Phase.LEAD_IN -> stringResource(R.string.round_starts, snapshot.round)
     snapshot.phase == Phase.REST -> stringResource(R.string.then_round, snapshot.round + 1)
-    snapshot.nextPhase == Phase.DONE -> stringResource(R.string.last_round)
-    snapshot.nextPhase == Phase.WORK -> stringResource(R.string.then_round, snapshot.round + 1)
+    snapshot.round == snapshot.rounds -> stringResource(R.string.last_round)
+    run.restSeconds == 0 -> stringResource(R.string.then_round, snapshot.round + 1)
     else -> stringResource(R.string.then_rest, formatShort(run.restSeconds))
 }
 
@@ -216,10 +207,9 @@ private fun subline(run: Run, snapshot: Snapshot): String = when {
 private fun RoundProgress(snapshot: Snapshot, colors: PhaseColors) {
     val (label, detail) = when {
         snapshot.phase == Phase.DONE -> stringResource(R.string.progress_done) to stringResource(R.string.progress_of, snapshot.rounds)
-        snapshot.phase == Phase.WORK -> stringResource(R.string.progress_round, snapshot.round) to
-            stringResource(R.string.progress_of, snapshot.rounds)
-        snapshot.completedRounds == 0 -> stringResource(R.string.phase_lead_in) to stringResource(R.string.progress_before, snapshot.rounds)
-        else -> stringResource(R.string.phase_rest) to stringResource(R.string.progress_after, snapshot.completedRounds, snapshot.rounds)
+        snapshot.phase == Phase.REST ->
+            stringResource(R.string.phase_rest) to stringResource(R.string.progress_after, snapshot.completedRounds, snapshot.rounds)
+        else -> stringResource(R.string.progress_round, snapshot.round) to stringResource(R.string.progress_of, snapshot.rounds)
     }
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {

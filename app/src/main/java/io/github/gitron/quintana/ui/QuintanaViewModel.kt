@@ -76,12 +76,12 @@ class QuintanaViewModel(application: Application) : AndroidViewModel(application
 
     fun restore(deleted: Deleted) = update { it.restore(deleted.set, deleted.index) }
 
-    fun setPreRoundWarning(seconds: Int) = update { it.withPreRoundWarning(seconds) }
+    fun setRoundEndWarning(seconds: Int) = update { it.withRoundEndWarning(seconds) }
 
     fun start(set: TimerSet) {
         val library = libraryState.value ?: return
         update { it.select(set.id) }
-        TimerService.start(getApplication<Application>(), Run.start(set, library.preRoundWarningSeconds, SystemClock.elapsedRealtime()))
+        TimerService.start(getApplication<Application>(), Run.start(set, library.roundEndWarningSeconds, SystemClock.elapsedRealtime()))
     }
 
     fun togglePause() = ActiveRun.togglePause(SystemClock.elapsedRealtime())

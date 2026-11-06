@@ -95,7 +95,7 @@ fun HomeScreen(
             if (set == null) {
                 NewSetPage(onCreate)
             } else {
-                SetPage(set, library.preRoundWarningSeconds, onEdit = { onEdit(set) }, onStart = { onStart(set) })
+                SetPage(set, onEdit = { onEdit(set) }, onStart = { onStart(set) })
             }
         }
         Spacer(Modifier.height(16.dp))
@@ -104,7 +104,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun SetPage(set: TimerSet, preRoundWarningSeconds: Int, onEdit: () -> Unit, onStart: () -> Unit) {
+private fun SetPage(set: TimerSet, onEdit: () -> Unit, onStart: () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(20.dp))
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -137,17 +137,17 @@ private fun SetPage(set: TimerSet, preRoundWarningSeconds: Int, onEdit: () -> Un
             Ring(size = ring, stroke = 14.dp, track = Track, color = Gules, remaining = 0f)
             val scale = ring / 290.dp
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(stringResource(R.string.phase_work).uppercase(), style = capitals(fixedSp(22.dp * scale), 0.24f), color = Gules)
+                Text(stringResource(R.string.phase_workout).uppercase(), style = capitals(fixedSp(22.dp * scale), 0.24f), color = Gules)
                 Text(formatClock(set.workSeconds), style = numbers(fixedSp(100.dp * scale)), color = Pergament)
                 Text(
-                    stringResource(R.string.total, formatShort(set.totalSeconds(preRoundWarningSeconds))),
+                    stringResource(R.string.total, formatShort(set.totalSeconds())),
                     fontSize = 16.sp,
                     color = TextSecondary,
                 )
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Tile(formatShort(set.workSeconds), stringResource(R.string.phase_work), Gules, Modifier.weight(1f))
+            Tile(formatShort(set.workSeconds), stringResource(R.string.phase_workout), Gules, Modifier.weight(1f))
             Tile(formatShort(set.restSeconds), stringResource(R.string.phase_rest), Azur, Modifier.weight(1f))
             Tile(set.rounds.toString(), stringResource(R.string.rounds), Pergament, Modifier.weight(1f))
         }

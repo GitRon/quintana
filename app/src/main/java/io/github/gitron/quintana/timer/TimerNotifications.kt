@@ -78,8 +78,8 @@ class TimerNotifications(private val context: Context) {
         val snapshot = run.snapshot(nowMillis)
         val phase = context.getString(
             when (snapshot.phase) {
-                Phase.LEAD_IN -> R.string.phase_lead_in
-                Phase.WORK -> R.string.phase_work
+                Phase.WORKOUT -> R.string.phase_workout
+                Phase.CLOSING -> R.string.phase_closing
                 Phase.REST -> R.string.phase_rest
                 Phase.DONE -> R.string.phase_done
             },

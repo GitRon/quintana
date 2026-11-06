@@ -64,7 +64,6 @@ private const val LARGE_STEPS = 6
 fun EditScreen(
     initial: TimerSet?,
     otherNames: List<String>,
-    preRoundWarningSeconds: Int,
     onBack: () -> Unit,
     onSave: (TimerSet) -> Unit,
     modifier: Modifier = Modifier,
@@ -97,7 +96,7 @@ fun EditScreen(
                     .clip(RoundedCornerShape(18.dp))
                     .background(Kohle),
             ) {
-                val workLabel = stringResource(R.string.phase_work)
+                val workLabel = stringResource(R.string.phase_workout)
                 StepperRow(workLabel, Gules, formatShort(work), Limits.work, work) { work = it }
                 HorizontalDivider(color = Track)
                 StepperRow(stringResource(R.string.phase_rest), Azur, formatShort(rest), Limits.rest, rest) { rest = it }
@@ -105,9 +104,9 @@ fun EditScreen(
                 StepperRow(stringResource(R.string.rounds), Pergament, rounds.toString(), Limits.rounds, rounds) { rounds = it }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(stringResource(R.string.total_with_lead_in), fontSize = 15.sp, color = TextSecondary)
+                Text(stringResource(R.string.total_duration), fontSize = 15.sp, color = TextSecondary)
                 Text(
-                    stringResource(R.string.total_minutes, formatShort(draft.totalSeconds(preRoundWarningSeconds))),
+                    stringResource(R.string.total_minutes, formatShort(draft.totalSeconds())),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Pergament,

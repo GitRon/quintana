@@ -41,12 +41,12 @@ import io.github.gitron.quintana.R
 import io.github.gitron.quintana.TimerSet
 import io.github.gitron.quintana.formatShort
 
-/** The global lead-in and the list of sets, the only place where sets are deleted. */
+/** The round-end warning for all sets and the list of sets, the only place where sets are deleted. */
 @Composable
 fun SettingsScreen(
     library: Library,
     onBack: () -> Unit,
-    onPreRoundWarningChange: (Int) -> Unit,
+    onRoundEndWarningChange: (Int) -> Unit,
     onDelete: (TimerSet) -> Unit,
     onCreate: () -> Unit,
     modifier: Modifier = Modifier,
@@ -65,8 +65,8 @@ fun SettingsScreen(
                 .padding(top = 22.dp),
             verticalArrangement = Arrangement.spacedBy(22.dp),
         ) {
-            Section(stringResource(R.string.lead_in_setting)) {
-                LeadInSetting(library.preRoundWarningSeconds, onPreRoundWarningChange)
+            Section(stringResource(R.string.warning_setting)) {
+                RoundEndWarningSetting(library.roundEndWarningSeconds, onRoundEndWarningChange)
             }
             Section(stringResource(R.string.my_sets)) {
                 if (library.sets.isEmpty()) {
@@ -110,8 +110,8 @@ private fun Section(label: String, content: @Composable ColumnScope.() -> Unit) 
 }
 
 @Composable
-private fun LeadInSetting(seconds: Int, onChange: (Int) -> Unit) {
-    val label = stringResource(R.string.phase_lead_in)
+private fun RoundEndWarningSetting(seconds: Int, onChange: (Int) -> Unit) {
+    val label = stringResource(R.string.warning)
     Row(
         Modifier
             .fillMaxWidth()
@@ -123,13 +123,13 @@ private fun LeadInSetting(seconds: Int, onChange: (Int) -> Unit) {
     ) {
         Dot(Or)
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(stringResource(R.string.lead_in_before_round), fontSize = 17.sp, color = Pergament)
-            Text(stringResource(R.string.lead_in_detail), fontSize = 13.sp, color = TextSecondary)
+            Text(stringResource(R.string.warning_before_end), fontSize = 17.sp, color = Pergament)
+            Text(stringResource(R.string.warning_detail), fontSize = 13.sp, color = TextSecondary)
         }
         Stepper(
             shown = if (seconds == 0) stringResource(R.string.off) else stringResource(R.string.seconds, seconds),
             label = label,
-            onStep = { count -> onChange(Limits.preRoundWarning.move(seconds, count)) },
+            onStep = { count -> onChange(Limits.roundEndWarning.move(seconds, count)) },
             valueWidth = 56,
             valueSize = 28,
         )

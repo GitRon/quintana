@@ -14,10 +14,9 @@ class TimerSetTest {
     }
 
     @Test
-    fun `total without lead-in has no rest after the last round`() {
+    fun `total has no rest after the last round`() {
         val set = TimerSet(name = "Tabata", workSeconds = 20, restSeconds = 10, rounds = 8)
-        assertEquals(8 * 20 + 7 * 10, set.totalSeconds(0))
-        assertEquals(8 * 20 + 7 * 10 + 10, set.totalSeconds(10))
+        assertEquals(8 * 20 + 7 * 10, set.totalSeconds())
     }
 
     @Test
@@ -28,8 +27,8 @@ class TimerSetTest {
         assertEquals(0, Limits.rest.move(5, -1))
         assertEquals(99, Limits.rounds.move(99, 1))
         assertEquals(1, Limits.rounds.move(1, -1))
-        assertEquals(0, Limits.preRoundWarning.move(1, -1))
-        assertEquals(30, Limits.preRoundWarning.move(30, 1))
+        assertEquals(0, Limits.roundEndWarning.move(1, -1))
+        assertEquals(30, Limits.roundEndWarning.move(30, 1))
     }
 
     @Test

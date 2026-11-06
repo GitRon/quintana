@@ -101,7 +101,6 @@ fun QuintanaApp(viewModel: QuintanaViewModel) {
                 EditScreen(
                     initial = set,
                     otherNames = current.sets.filter { it.id != set?.id }.map { it.name },
-                    preRoundWarningSeconds = current.preRoundWarningSeconds,
                     onBack = back,
                     onSave = viewModel::save,
                 )
@@ -112,7 +111,7 @@ fun QuintanaApp(viewModel: QuintanaViewModel) {
                 SettingsScreen(
                     library = current,
                     onBack = back,
-                    onPreRoundWarningChange = viewModel::setPreRoundWarning,
+                    onRoundEndWarningChange = viewModel::setRoundEndWarning,
                     onDelete = delete,
                     onCreate = { viewModel.show(Screen.Edit(setId = null, from = Screen.Settings)) },
                 )
